@@ -4,18 +4,21 @@ from copy import deepcopy
 from decimal import Decimal, getcontext, ROUND_HALF_DOWN
 import logging
 import os
+import time
 
 import pandas as pd
 
 from qsforex.event.event import OrderEvent
 from qsforex.performance.performance import create_drawdowns
 from qsforex.portfolio.position import Position
-from qsforex.settings import OUTPUT_RESULTS_DIR
+from qsforex.settings import OUTPUT_RESULTS_DIR, BASE_CURRENCY
+from qsforex.performance.plot_performance import create_perf_plot
+
 
 
 class Portfolio(object):
     def __init__(
-        self, ticker, events, home_currency="GBP", 
+        self, ticker, events, home_currency= BASE_CURRENCY,
         leverage=20, equity=Decimal("100000.00"), 
         risk_per_trade=Decimal("0.02"), backtest=True
     ):
@@ -87,6 +90,7 @@ class Portfolio(object):
     def output_results(self):
         # Closes off the Backtest.csv file so it can be 
         # read via Pandas without problems
+        ts = time.time()
         self.backtest_file.close()
         
         in_filename = "backtest.csv"
@@ -105,8 +109,10 @@ class Portfolio(object):
         drawdown, max_dd, dd_duration = create_drawdowns(df["Equity"])
         df["Drawdown"] = drawdown
         df.to_csv(out_file, index=True)
+        create_perf_plot(df)
+        elapsed = time.time() - ts
         
-        print("Simulation complete and results exported to %s" % out_filename)
+        print("Simulation complete and results exported to %s in %3.2fs" % (out_filename, elapsed))
 
     def update_portfolio(self, tick_event):
         """

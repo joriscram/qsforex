@@ -49,6 +49,7 @@ class Backtest(object):
         exceeded.
         """
         print("Running Backtest...")
+        ts = time.time()
         iters = 0
         while iters < self.max_iters and self.ticker.continue_backtest:
             try:
@@ -66,6 +67,9 @@ class Backtest(object):
                         self.execution.execute_order(event)
             time.sleep(self.heartbeat)
             iters += 1
+        elapsed = time.time() - ts
+
+        print("DONE running in %3.2fs " % elapsed)
 
     def _output_performance(self):
         """

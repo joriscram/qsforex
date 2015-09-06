@@ -1,6 +1,8 @@
 from decimal import Decimal
 import os
+from qsforex.utilities import filepaths as fp
 
+#TODO: move settings to utilities
 
 ENVIRONMENTS = { 
     "streaming": {
@@ -15,8 +17,8 @@ ENVIRONMENTS = {
     }
 }
 
-CSV_DATA_DIR = os.environ.get('QSFOREX_CSV_DATA_DIR', None)
-OUTPUT_RESULTS_DIR = os.environ.get('QSFOREX_OUTPUT_RESULTS_DIR', None)
+CSV_DATA_DIR = fp.DATA
+OUTPUT_RESULTS_DIR = fp.OUTPUT
 
 DOMAIN = "practice"
 STREAM_DOMAIN = ENVIRONMENTS["streaming"][DOMAIN]
@@ -24,5 +26,5 @@ API_DOMAIN = ENVIRONMENTS["api"][DOMAIN]
 ACCESS_TOKEN = os.environ.get('OANDA_API_ACCESS_TOKEN', None)
 ACCOUNT_ID = os.environ.get('OANDA_API_ACCOUNT_ID', None)
 
-BASE_CURRENCY = "GBP"
+BASE_CURRENCY = "EUR"
 EQUITY = Decimal("100000.00")

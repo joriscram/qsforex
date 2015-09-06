@@ -12,6 +12,7 @@ import pandas as pd
 
 from qsforex import settings
 from qsforex.event.event import TickEvent
+from qsforex.utilities import filepaths as fp
 
 
 class PriceHandler(object):
@@ -108,7 +109,7 @@ class HistoricCSVPriceHandler(PriceHandler):
         )
 
     def _list_all_csv_files(self):
-        files = os.listdir(settings.CSV_DATA_DIR)
+        files = fp.get_list_csv()
         pattern = re.compile("[A-Z]{6}_\d{8}.csv")
         matching_files = [f for f in files if pattern.search(f)]
         matching_files.sort()

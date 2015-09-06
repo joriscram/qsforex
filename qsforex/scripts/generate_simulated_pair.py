@@ -25,6 +25,7 @@ def month_weekdays(year_int, month_int):
 
 
 if __name__ == "__main__":
+    from qsforex.utilities import filepaths as fp
     try:
         pair = sys.argv[1]
     except IndexError:
@@ -49,9 +50,7 @@ if __name__ == "__main__":
             print(d.day)
             current_time = current_time.replace(day=d.day)
             outfile = open(
-                os.path.join(
-                    settings.CSV_DATA_DIR, 
-                    "%s_%s.csv" % (
+                fp.get_data("%s_%s.csv" % (
                         pair, d.strftime("%Y%m%d")
                     )
                 ), 
