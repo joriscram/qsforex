@@ -9,10 +9,10 @@ except ImportError:
 import threading
 import time
 
-from qsforex.execution.execution import OANDAExecutionHandler
+from qsforex.execution.execution import OANDAExecutionHandler, IBExecutionHandler
 from qsforex.portfolio.portfolio import Portfolio
 from qsforex import settings
-from qsforex.strategy.strategy import TestStrategy
+from qsforex.strategy.strategy import MovingAverageCrossStrategy
 from qsforex.data.streaming import StreamingForexPrices
 
 
@@ -68,7 +68,7 @@ if __name__ == "__main__":
 
     # Create the strategy/signal generator, passing the 
     # instrument and the events queue
-    strategy = TestStrategy(pairs, events)
+    strategy = MovingAverageCrossStrategy(pairs, events)
 
     # Create the portfolio object that will be used to
     # compare the OANDA positions with the local, to
@@ -80,10 +80,14 @@ if __name__ == "__main__":
     # Create the execution handler making sure to
     # provide authentication commands
     execution = OANDAExecutionHandler(
-        settings.API_DOMAIN, 
-        settings.ACCESS_TOKEN, 
+        settings.API_DOMAIN,
+        settings.ACCESS_TOKEN,
         settings.ACCOUNT_ID
     )
+
+    # execution = IBExecutionHandler(
+    #
+    # )
     
     # Create two separate threads: One for the trading loop
     # and another for the market price streaming class
