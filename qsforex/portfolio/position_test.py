@@ -1,7 +1,7 @@
 from decimal import Decimal
 import unittest
 
-from position import Position
+from qsforex.portfolio.position import Position
 
 
 class TickerMock(object):
@@ -226,5 +226,15 @@ class TestLongEURUSDPosition(unittest.TestCase):
         self.assertEqual(profit_perc, Decimal("0.00332"))
 
 
-if __name__ == "__main__":
-    unittest.main()
+
+def main():
+    suite_positions = unittest.TestLoader().loadTestsFromTestCase(TestLongEURUSDPosition)
+    suite_positions.addTest(TestLongGBPUSDPosition)
+    suite_positions.addTest(TestShortGBPUSDPosition)
+
+    unittest.TextTestRunner(verbosity=2).run(suite_positions)
+
+
+if __name__ == '__main__':
+    main()
+

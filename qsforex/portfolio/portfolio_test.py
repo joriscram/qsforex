@@ -3,7 +3,7 @@ import unittest
 
 from qsforex.portfolio.portfolio import Portfolio
 from qsforex.portfolio.position_test import TickerMock
-from qsforex.portfolio.position import Position
+
 
 
 class TestPortfolio(unittest.TestCase):
@@ -321,5 +321,10 @@ class TestPortfolio(unittest.TestCase):
         self.assertEqual(self.port.balance, Decimal("99962.77"))
 
 
-if __name__ == "__main__":
-    unittest.main()
+def main():
+    suite_portfolio = unittest.TestLoader().loadTestsFromTestCase(TestPortfolio)
+    unittest.TextTestRunner(verbosity=2).run(suite_portfolio)
+
+
+if __name__ == '__main__':
+    main()
