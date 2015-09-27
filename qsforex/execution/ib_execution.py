@@ -268,14 +268,30 @@ if __name__ == "__main__":
 
     # Create an order ID which is 'global' for this session. This
     # will need incrementing once new orders are submitted.
-    order_id = 4
+    order_id = 1236
 
+    fx = Contract()
+    fx.m_secType = "CASH"
+    fx.m_symbol = "USD"
+    fx.m_currency = "CAD"
+    fx.m_exchange = "IDEALPRO"
+    tws_conn.reqMktData(1,fx,"",False)
 
+    ord = Order()
+    ord.m_orderType = 'MKT'
+    ord.m_totalQuantity = 100000
+    ord.m_action = 'BUY'
+    ord.m_transmit = False
+    tws_conn.placeOrder(order_id,fx,ord)
     # Create a contract in GOOG stock via SMART order routing
-    goog_contract = create_contract('GOOG', 'STK', 'SMART', 'SMART', 'USD')
+
+    goog_contract = create_contract('USD.GBP', 'CASH', 'IDEALPRO', 'IDEALPRO', 'GBP')
+    #goog_contract = create_contract('GOOG', 'STK', 'SMART', 'SMART', 'USD')
 
     # Go long 100 shares of Google
-    goog_order = create_order('MKT', 100, 'SELL')
+    goog_order = create_order('MKT', 100, 'BUY')
+
+    time.sleep(2)
 
     # Use the connection to the send the order to IB
     tws_conn.placeOrder(order_id, goog_contract, goog_order)
